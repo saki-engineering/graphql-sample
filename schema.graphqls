@@ -1,0 +1,192 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+scalar DateTime
+
+scalar URI
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type Repository implements Node {
+  id: ID!
+  owner: User!
+  name: String!
+  createdAt: DateTime!
+  issue(
+    number: Int!
+  ): Issue
+  issues(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): IssueConnection!
+  pullRequest(
+    number: Int!
+  ): PullRequest
+  pullRequests(
+    after: String
+    baseRefName: String
+    before: String
+    first: Int
+    headRefName: String
+    last: Int
+  ): PullRequestConnection!
+}
+
+type User implements Node {
+  id: ID!
+  name: String!
+  projectV2(
+    number: Int!
+  ): ProjectV2
+  projectV2s(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ProjectV2Connection!
+}
+
+type Issue implements Node {
+  id: ID!
+  url: URI!
+  title: String!
+  closed: Boolean!
+  number: Int!
+  author: User!
+  repository: Repository!
+  projectItems(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ProjectV2ItemConnection!
+}
+
+type IssueConnection {
+  edges: [IssueEdge]
+  nodes: [Issue]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type IssueEdge {
+  cursor: String!
+  node: Issue
+}
+
+type PullRequest implements Node {
+  id: ID!
+  baseRefName: String!
+  closed: Boolean!
+  headRefName: String!
+  url: URI!
+  number: Int!
+  repository: Repository!
+  projectItems(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ProjectV2ItemConnection!
+}
+
+type PullRequestConnection {
+  edges: [PullRequestEdge]
+  nodes: [PullRequest]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PullRequestEdge {
+  cursor: String!
+  node: PullRequest
+}
+
+type ProjectV2 implements Node {
+  id: ID!
+  title: String!
+  url: URI!
+  number: Int!
+  items(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ProjectV2ItemConnection!
+  owner: User!
+}
+
+type ProjectV2Connection {
+  edges: [ProjectV2Edge]
+  nodes: [ProjectV2]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ProjectV2Edge {
+  cursor: String!
+  node: ProjectV2
+}
+
+union ProjectV2ItemContent = Issue | PullRequest
+
+type ProjectV2Item implements Node {
+  id: ID!
+  project: ProjectV2!
+  content: ProjectV2ItemContent
+}
+
+type ProjectV2ItemConnection {
+  edges: [ProjectV2ItemEdge]
+  nodes: [ProjectV2Item]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ProjectV2ItemEdge {
+  cursor: String!
+  node: ProjectV2Item
+}
+
+type Query {
+  repository(
+    name: String!
+    owner: String!
+  ): Repository
+
+  user(
+    name: String!
+  ): User
+
+  node(
+    id: ID!
+  ): Node
+
+}
+
+input AddProjectV2ItemByIdInput {
+  contentId: ID!
+  projectId: ID!
+}
+
+type AddProjectV2ItemByIdPayload {
+  item: ProjectV2Item
+}
+
+type Mutation {
+  addProjectV2ItemById(
+    input: AddProjectV2ItemByIdInput!
+  ): AddProjectV2ItemByIdPayload
+}

@@ -1,0 +1,8 @@
+pkgname="db"
+output="graph/db"
+wipe=true
+add-global-variants=true
+no-tests=true
+
+[sqlite3]
+	dbname = "./mygraphql.db"

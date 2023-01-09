@@ -1,0 +1,13 @@
+query {
+	node(id: "REPO_1") {
+		id
+		... on Repository {
+			name
+			createdAt
+			owner{
+				name
+				id
+			}
+		}
+	}
+}
