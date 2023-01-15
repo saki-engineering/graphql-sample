@@ -43,6 +43,7 @@ func main() {
 			Loaders: graph.NewLoaders(service),
 		},
 		Directives: graph.Directive,
+		Complexity: graph.ComplexityConfig(),
 	}))
 	srv.Use(extension.FixedComplexityLimit(10))
 	// srv.AroundRootFields(func(ctx context.Context, next graphql.RootResolver) graphql.Marshaler {
