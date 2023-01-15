@@ -352,11 +352,6 @@ func AddRepositoryHook(hookPoint boil.HookPoint, repositoryHook RepositoryHook) 
 	}
 }
 
-// OneG returns a single repository record from the query using the global executor.
-func (q repositoryQuery) OneG(ctx context.Context) (*Repository, error) {
-	return q.One(ctx, boil.GetContextDB())
-}
-
 // One returns a single repository record from the query.
 func (q repositoryQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Repository, error) {
 	o := &Repository{}
@@ -376,11 +371,6 @@ func (q repositoryQuery) One(ctx context.Context, exec boil.ContextExecutor) (*R
 	}
 
 	return o, nil
-}
-
-// AllG returns all Repository records from the query using the global executor.
-func (q repositoryQuery) AllG(ctx context.Context) (RepositorySlice, error) {
-	return q.All(ctx, boil.GetContextDB())
 }
 
 // All returns all Repository records from the query.
@@ -403,11 +393,6 @@ func (q repositoryQuery) All(ctx context.Context, exec boil.ContextExecutor) (Re
 	return o, nil
 }
 
-// CountG returns the count of all Repository records in the query using the global executor
-func (q repositoryQuery) CountG(ctx context.Context) (int64, error) {
-	return q.Count(ctx, boil.GetContextDB())
-}
-
 // Count returns the count of all Repository records in the query.
 func (q repositoryQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
@@ -421,11 +406,6 @@ func (q repositoryQuery) Count(ctx context.Context, exec boil.ContextExecutor) (
 	}
 
 	return count, nil
-}
-
-// ExistsG checks if the row exists in the table using the global executor.
-func (q repositoryQuery) ExistsG(ctx context.Context) (bool, error) {
-	return q.Exists(ctx, boil.GetContextDB())
 }
 
 // Exists checks if the row exists in the table.
@@ -831,14 +811,6 @@ func (repositoryL) LoadPullrequests(ctx context.Context, e boil.ContextExecutor,
 	return nil
 }
 
-// SetOwnerUserG of the repository to the related item.
-// Sets o.R.OwnerUser to related.
-// Adds o to related.R.OwnerRepositories.
-// Uses the global database handle.
-func (o *Repository) SetOwnerUserG(ctx context.Context, insert bool, related *User) error {
-	return o.SetOwnerUser(ctx, boil.GetContextDB(), insert, related)
-}
-
 // SetOwnerUser of the repository to the related item.
 // Sets o.R.OwnerUser to related.
 // Adds o to related.R.OwnerRepositories.
@@ -884,15 +856,6 @@ func (o *Repository) SetOwnerUser(ctx context.Context, exec boil.ContextExecutor
 	}
 
 	return nil
-}
-
-// AddIssuesG adds the given related objects to the existing relationships
-// of the repository, optionally inserting them as new records.
-// Appends related to o.R.Issues.
-// Sets related.R.IssueRepository appropriately.
-// Uses the global database handle.
-func (o *Repository) AddIssuesG(ctx context.Context, insert bool, related ...*Issue) error {
-	return o.AddIssues(ctx, boil.GetContextDB(), insert, related...)
 }
 
 // AddIssues adds the given related objects to the existing relationships
@@ -946,15 +909,6 @@ func (o *Repository) AddIssues(ctx context.Context, exec boil.ContextExecutor, i
 		}
 	}
 	return nil
-}
-
-// AddPullrequestsG adds the given related objects to the existing relationships
-// of the repository, optionally inserting them as new records.
-// Appends related to o.R.Pullrequests.
-// Sets related.R.PullrequestRepository appropriately.
-// Uses the global database handle.
-func (o *Repository) AddPullrequestsG(ctx context.Context, insert bool, related ...*Pullrequest) error {
-	return o.AddPullrequests(ctx, boil.GetContextDB(), insert, related...)
 }
 
 // AddPullrequests adds the given related objects to the existing relationships
@@ -1021,11 +975,6 @@ func Repositories(mods ...qm.QueryMod) repositoryQuery {
 	return repositoryQuery{q}
 }
 
-// FindRepositoryG retrieves a single record by ID.
-func FindRepositoryG(ctx context.Context, iD string, selectCols ...string) (*Repository, error) {
-	return FindRepository(ctx, boil.GetContextDB(), iD, selectCols...)
-}
-
 // FindRepository retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
 func FindRepository(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Repository, error) {
@@ -1054,11 +1003,6 @@ func FindRepository(ctx context.Context, exec boil.ContextExecutor, iD string, s
 	}
 
 	return repositoryObj, nil
-}
-
-// InsertG a single record. See Insert for whitelist behavior description.
-func (o *Repository) InsertG(ctx context.Context, columns boil.Columns) error {
-	return o.Insert(ctx, boil.GetContextDB(), columns)
 }
 
 // Insert a single record using an executor.
@@ -1147,12 +1091,6 @@ func (o *Repository) Insert(ctx context.Context, exec boil.ContextExecutor, colu
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// UpdateG a single Repository record using the global executor.
-// See Update for more documentation.
-func (o *Repository) UpdateG(ctx context.Context, columns boil.Columns) (int64, error) {
-	return o.Update(ctx, boil.GetContextDB(), columns)
-}
-
 // Update uses an executor to update the Repository.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
@@ -1216,11 +1154,6 @@ func (o *Repository) Update(ctx context.Context, exec boil.ContextExecutor, colu
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
-// UpdateAllG updates all rows with the specified column values.
-func (q repositoryQuery) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return q.UpdateAll(ctx, boil.GetContextDB(), cols)
-}
-
 // UpdateAll updates all rows with the specified column values.
 func (q repositoryQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
@@ -1236,11 +1169,6 @@ func (q repositoryQuery) UpdateAll(ctx context.Context, exec boil.ContextExecuto
 	}
 
 	return rowsAff, nil
-}
-
-// UpdateAllG updates all rows with the specified column values.
-func (o RepositorySlice) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return o.UpdateAll(ctx, boil.GetContextDB(), cols)
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
@@ -1289,11 +1217,6 @@ func (o RepositorySlice) UpdateAll(ctx context.Context, exec boil.ContextExecuto
 		return 0, errors.Wrap(err, "db: unable to retrieve rows affected all in update all repository")
 	}
 	return rowsAff, nil
-}
-
-// UpsertG attempts an insert, and does an update or ignore on conflict.
-func (o *Repository) UpsertG(ctx context.Context, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
-	return o.Upsert(ctx, boil.GetContextDB(), updateOnConflict, conflictColumns, updateColumns, insertColumns)
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
@@ -1418,12 +1341,6 @@ func (o *Repository) Upsert(ctx context.Context, exec boil.ContextExecutor, upda
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// DeleteG deletes a single Repository record.
-// DeleteG will match against the primary key column to find the record to delete.
-func (o *Repository) DeleteG(ctx context.Context) (int64, error) {
-	return o.Delete(ctx, boil.GetContextDB())
-}
-
 // Delete deletes a single Repository record with an executor.
 // Delete will match against the primary key column to find the record to delete.
 func (o *Repository) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
@@ -1460,10 +1377,6 @@ func (o *Repository) Delete(ctx context.Context, exec boil.ContextExecutor) (int
 	return rowsAff, nil
 }
 
-func (q repositoryQuery) DeleteAllG(ctx context.Context) (int64, error) {
-	return q.DeleteAll(ctx, boil.GetContextDB())
-}
-
 // DeleteAll deletes all matching rows.
 func (q repositoryQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
@@ -1483,11 +1396,6 @@ func (q repositoryQuery) DeleteAll(ctx context.Context, exec boil.ContextExecuto
 	}
 
 	return rowsAff, nil
-}
-
-// DeleteAllG deletes all rows in the slice.
-func (o RepositorySlice) DeleteAllG(ctx context.Context) (int64, error) {
-	return o.DeleteAll(ctx, boil.GetContextDB())
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
@@ -1539,15 +1447,6 @@ func (o RepositorySlice) DeleteAll(ctx context.Context, exec boil.ContextExecuto
 	return rowsAff, nil
 }
 
-// ReloadG refetches the object from the database using the primary keys.
-func (o *Repository) ReloadG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: no Repository provided for reload")
-	}
-
-	return o.Reload(ctx, boil.GetContextDB())
-}
-
 // Reload refetches the object from the database
 // using the primary keys with an executor.
 func (o *Repository) Reload(ctx context.Context, exec boil.ContextExecutor) error {
@@ -1558,16 +1457,6 @@ func (o *Repository) Reload(ctx context.Context, exec boil.ContextExecutor) erro
 
 	*o = *ret
 	return nil
-}
-
-// ReloadAllG refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-func (o *RepositorySlice) ReloadAllG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: empty RepositorySlice provided for reload all")
-	}
-
-	return o.ReloadAll(ctx, boil.GetContextDB())
 }
 
 // ReloadAll refetches every row with matching primary key column values
@@ -1597,11 +1486,6 @@ func (o *RepositorySlice) ReloadAll(ctx context.Context, exec boil.ContextExecut
 	*o = slice
 
 	return nil
-}
-
-// RepositoryExistsG checks if the Repository row exists.
-func RepositoryExistsG(ctx context.Context, iD string) (bool, error) {
-	return RepositoryExists(ctx, boil.GetContextDB(), iD)
 }
 
 // RepositoryExists checks if the Repository row exists.

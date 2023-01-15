@@ -370,11 +370,6 @@ func AddProjectcardHook(hookPoint boil.HookPoint, projectcardHook ProjectcardHoo
 	}
 }
 
-// OneG returns a single projectcard record from the query using the global executor.
-func (q projectcardQuery) OneG(ctx context.Context) (*Projectcard, error) {
-	return q.One(ctx, boil.GetContextDB())
-}
-
 // One returns a single projectcard record from the query.
 func (q projectcardQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Projectcard, error) {
 	o := &Projectcard{}
@@ -394,11 +389,6 @@ func (q projectcardQuery) One(ctx context.Context, exec boil.ContextExecutor) (*
 	}
 
 	return o, nil
-}
-
-// AllG returns all Projectcard records from the query using the global executor.
-func (q projectcardQuery) AllG(ctx context.Context) (ProjectcardSlice, error) {
-	return q.All(ctx, boil.GetContextDB())
 }
 
 // All returns all Projectcard records from the query.
@@ -421,11 +411,6 @@ func (q projectcardQuery) All(ctx context.Context, exec boil.ContextExecutor) (P
 	return o, nil
 }
 
-// CountG returns the count of all Projectcard records in the query using the global executor
-func (q projectcardQuery) CountG(ctx context.Context) (int64, error) {
-	return q.Count(ctx, boil.GetContextDB())
-}
-
 // Count returns the count of all Projectcard records in the query.
 func (q projectcardQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
@@ -439,11 +424,6 @@ func (q projectcardQuery) Count(ctx context.Context, exec boil.ContextExecutor) 
 	}
 
 	return count, nil
-}
-
-// ExistsG checks if the row exists in the table using the global executor.
-func (q projectcardQuery) ExistsG(ctx context.Context) (bool, error) {
-	return q.Exists(ctx, boil.GetContextDB())
 }
 
 // Exists checks if the row exists in the table.
@@ -863,14 +843,6 @@ func (projectcardL) LoadProjectcardProject(ctx context.Context, e boil.ContextEx
 	return nil
 }
 
-// SetProjectcardPullrequestG of the projectcard to the related item.
-// Sets o.R.ProjectcardPullrequest to related.
-// Adds o to related.R.Projectcards.
-// Uses the global database handle.
-func (o *Projectcard) SetProjectcardPullrequestG(ctx context.Context, insert bool, related *Pullrequest) error {
-	return o.SetProjectcardPullrequest(ctx, boil.GetContextDB(), insert, related)
-}
-
 // SetProjectcardPullrequest of the projectcard to the related item.
 // Sets o.R.ProjectcardPullrequest to related.
 // Adds o to related.R.Projectcards.
@@ -918,14 +890,6 @@ func (o *Projectcard) SetProjectcardPullrequest(ctx context.Context, exec boil.C
 	return nil
 }
 
-// RemoveProjectcardPullrequestG relationship.
-// Sets o.R.ProjectcardPullrequest to nil.
-// Removes o from all passed in related items' relationships struct.
-// Uses the global database handle.
-func (o *Projectcard) RemoveProjectcardPullrequestG(ctx context.Context, related *Pullrequest) error {
-	return o.RemoveProjectcardPullrequest(ctx, boil.GetContextDB(), related)
-}
-
 // RemoveProjectcardPullrequest relationship.
 // Sets o.R.ProjectcardPullrequest to nil.
 // Removes o from all passed in related items' relationships struct.
@@ -957,14 +921,6 @@ func (o *Projectcard) RemoveProjectcardPullrequest(ctx context.Context, exec boi
 		break
 	}
 	return nil
-}
-
-// SetProjectcardIssueG of the projectcard to the related item.
-// Sets o.R.ProjectcardIssue to related.
-// Adds o to related.R.Projectcards.
-// Uses the global database handle.
-func (o *Projectcard) SetProjectcardIssueG(ctx context.Context, insert bool, related *Issue) error {
-	return o.SetProjectcardIssue(ctx, boil.GetContextDB(), insert, related)
 }
 
 // SetProjectcardIssue of the projectcard to the related item.
@@ -1014,14 +970,6 @@ func (o *Projectcard) SetProjectcardIssue(ctx context.Context, exec boil.Context
 	return nil
 }
 
-// RemoveProjectcardIssueG relationship.
-// Sets o.R.ProjectcardIssue to nil.
-// Removes o from all passed in related items' relationships struct.
-// Uses the global database handle.
-func (o *Projectcard) RemoveProjectcardIssueG(ctx context.Context, related *Issue) error {
-	return o.RemoveProjectcardIssue(ctx, boil.GetContextDB(), related)
-}
-
 // RemoveProjectcardIssue relationship.
 // Sets o.R.ProjectcardIssue to nil.
 // Removes o from all passed in related items' relationships struct.
@@ -1053,14 +1001,6 @@ func (o *Projectcard) RemoveProjectcardIssue(ctx context.Context, exec boil.Cont
 		break
 	}
 	return nil
-}
-
-// SetProjectcardProjectG of the projectcard to the related item.
-// Sets o.R.ProjectcardProject to related.
-// Adds o to related.R.Projectcards.
-// Uses the global database handle.
-func (o *Projectcard) SetProjectcardProjectG(ctx context.Context, insert bool, related *Project) error {
-	return o.SetProjectcardProject(ctx, boil.GetContextDB(), insert, related)
 }
 
 // SetProjectcardProject of the projectcard to the related item.
@@ -1121,11 +1061,6 @@ func Projectcards(mods ...qm.QueryMod) projectcardQuery {
 	return projectcardQuery{q}
 }
 
-// FindProjectcardG retrieves a single record by ID.
-func FindProjectcardG(ctx context.Context, iD string, selectCols ...string) (*Projectcard, error) {
-	return FindProjectcard(ctx, boil.GetContextDB(), iD, selectCols...)
-}
-
 // FindProjectcard retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
 func FindProjectcard(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Projectcard, error) {
@@ -1154,11 +1089,6 @@ func FindProjectcard(ctx context.Context, exec boil.ContextExecutor, iD string, 
 	}
 
 	return projectcardObj, nil
-}
-
-// InsertG a single record. See Insert for whitelist behavior description.
-func (o *Projectcard) InsertG(ctx context.Context, columns boil.Columns) error {
-	return o.Insert(ctx, boil.GetContextDB(), columns)
 }
 
 // Insert a single record using an executor.
@@ -1240,12 +1170,6 @@ func (o *Projectcard) Insert(ctx context.Context, exec boil.ContextExecutor, col
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// UpdateG a single Projectcard record using the global executor.
-// See Update for more documentation.
-func (o *Projectcard) UpdateG(ctx context.Context, columns boil.Columns) (int64, error) {
-	return o.Update(ctx, boil.GetContextDB(), columns)
-}
-
 // Update uses an executor to update the Projectcard.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
@@ -1309,11 +1233,6 @@ func (o *Projectcard) Update(ctx context.Context, exec boil.ContextExecutor, col
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
-// UpdateAllG updates all rows with the specified column values.
-func (q projectcardQuery) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return q.UpdateAll(ctx, boil.GetContextDB(), cols)
-}
-
 // UpdateAll updates all rows with the specified column values.
 func (q projectcardQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
@@ -1329,11 +1248,6 @@ func (q projectcardQuery) UpdateAll(ctx context.Context, exec boil.ContextExecut
 	}
 
 	return rowsAff, nil
-}
-
-// UpdateAllG updates all rows with the specified column values.
-func (o ProjectcardSlice) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return o.UpdateAll(ctx, boil.GetContextDB(), cols)
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
@@ -1382,11 +1296,6 @@ func (o ProjectcardSlice) UpdateAll(ctx context.Context, exec boil.ContextExecut
 		return 0, errors.Wrap(err, "db: unable to retrieve rows affected all in update all projectcard")
 	}
 	return rowsAff, nil
-}
-
-// UpsertG attempts an insert, and does an update or ignore on conflict.
-func (o *Projectcard) UpsertG(ctx context.Context, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
-	return o.Upsert(ctx, boil.GetContextDB(), updateOnConflict, conflictColumns, updateColumns, insertColumns)
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
@@ -1504,12 +1413,6 @@ func (o *Projectcard) Upsert(ctx context.Context, exec boil.ContextExecutor, upd
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// DeleteG deletes a single Projectcard record.
-// DeleteG will match against the primary key column to find the record to delete.
-func (o *Projectcard) DeleteG(ctx context.Context) (int64, error) {
-	return o.Delete(ctx, boil.GetContextDB())
-}
-
 // Delete deletes a single Projectcard record with an executor.
 // Delete will match against the primary key column to find the record to delete.
 func (o *Projectcard) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
@@ -1546,10 +1449,6 @@ func (o *Projectcard) Delete(ctx context.Context, exec boil.ContextExecutor) (in
 	return rowsAff, nil
 }
 
-func (q projectcardQuery) DeleteAllG(ctx context.Context) (int64, error) {
-	return q.DeleteAll(ctx, boil.GetContextDB())
-}
-
 // DeleteAll deletes all matching rows.
 func (q projectcardQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
@@ -1569,11 +1468,6 @@ func (q projectcardQuery) DeleteAll(ctx context.Context, exec boil.ContextExecut
 	}
 
 	return rowsAff, nil
-}
-
-// DeleteAllG deletes all rows in the slice.
-func (o ProjectcardSlice) DeleteAllG(ctx context.Context) (int64, error) {
-	return o.DeleteAll(ctx, boil.GetContextDB())
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
@@ -1625,15 +1519,6 @@ func (o ProjectcardSlice) DeleteAll(ctx context.Context, exec boil.ContextExecut
 	return rowsAff, nil
 }
 
-// ReloadG refetches the object from the database using the primary keys.
-func (o *Projectcard) ReloadG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: no Projectcard provided for reload")
-	}
-
-	return o.Reload(ctx, boil.GetContextDB())
-}
-
 // Reload refetches the object from the database
 // using the primary keys with an executor.
 func (o *Projectcard) Reload(ctx context.Context, exec boil.ContextExecutor) error {
@@ -1644,16 +1529,6 @@ func (o *Projectcard) Reload(ctx context.Context, exec boil.ContextExecutor) err
 
 	*o = *ret
 	return nil
-}
-
-// ReloadAllG refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-func (o *ProjectcardSlice) ReloadAllG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: empty ProjectcardSlice provided for reload all")
-	}
-
-	return o.ReloadAll(ctx, boil.GetContextDB())
 }
 
 // ReloadAll refetches every row with matching primary key column values
@@ -1683,11 +1558,6 @@ func (o *ProjectcardSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 	*o = slice
 
 	return nil
-}
-
-// ProjectcardExistsG checks if the Projectcard row exists.
-func ProjectcardExistsG(ctx context.Context, iD string) (bool, error) {
-	return ProjectcardExists(ctx, boil.GetContextDB(), iD)
 }
 
 // ProjectcardExists checks if the Projectcard row exists.

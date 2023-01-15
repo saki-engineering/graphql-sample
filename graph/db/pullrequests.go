@@ -342,11 +342,6 @@ func AddPullrequestHook(hookPoint boil.HookPoint, pullrequestHook PullrequestHoo
 	}
 }
 
-// OneG returns a single pullrequest record from the query using the global executor.
-func (q pullrequestQuery) OneG(ctx context.Context) (*Pullrequest, error) {
-	return q.One(ctx, boil.GetContextDB())
-}
-
 // One returns a single pullrequest record from the query.
 func (q pullrequestQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Pullrequest, error) {
 	o := &Pullrequest{}
@@ -366,11 +361,6 @@ func (q pullrequestQuery) One(ctx context.Context, exec boil.ContextExecutor) (*
 	}
 
 	return o, nil
-}
-
-// AllG returns all Pullrequest records from the query using the global executor.
-func (q pullrequestQuery) AllG(ctx context.Context) (PullrequestSlice, error) {
-	return q.All(ctx, boil.GetContextDB())
 }
 
 // All returns all Pullrequest records from the query.
@@ -393,11 +383,6 @@ func (q pullrequestQuery) All(ctx context.Context, exec boil.ContextExecutor) (P
 	return o, nil
 }
 
-// CountG returns the count of all Pullrequest records in the query using the global executor
-func (q pullrequestQuery) CountG(ctx context.Context) (int64, error) {
-	return q.Count(ctx, boil.GetContextDB())
-}
-
 // Count returns the count of all Pullrequest records in the query.
 func (q pullrequestQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
@@ -411,11 +396,6 @@ func (q pullrequestQuery) Count(ctx context.Context, exec boil.ContextExecutor) 
 	}
 
 	return count, nil
-}
-
-// ExistsG checks if the row exists in the table using the global executor.
-func (q pullrequestQuery) ExistsG(ctx context.Context) (bool, error) {
-	return q.Exists(ctx, boil.GetContextDB())
 }
 
 // Exists checks if the row exists in the table.
@@ -693,14 +673,6 @@ func (pullrequestL) LoadProjectcards(ctx context.Context, e boil.ContextExecutor
 	return nil
 }
 
-// SetPullrequestRepositoryG of the pullrequest to the related item.
-// Sets o.R.PullrequestRepository to related.
-// Adds o to related.R.Pullrequests.
-// Uses the global database handle.
-func (o *Pullrequest) SetPullrequestRepositoryG(ctx context.Context, insert bool, related *Repository) error {
-	return o.SetPullrequestRepository(ctx, boil.GetContextDB(), insert, related)
-}
-
 // SetPullrequestRepository of the pullrequest to the related item.
 // Sets o.R.PullrequestRepository to related.
 // Adds o to related.R.Pullrequests.
@@ -746,15 +718,6 @@ func (o *Pullrequest) SetPullrequestRepository(ctx context.Context, exec boil.Co
 	}
 
 	return nil
-}
-
-// AddProjectcardsG adds the given related objects to the existing relationships
-// of the pullrequest, optionally inserting them as new records.
-// Appends related to o.R.Projectcards.
-// Sets related.R.ProjectcardPullrequest appropriately.
-// Uses the global database handle.
-func (o *Pullrequest) AddProjectcardsG(ctx context.Context, insert bool, related ...*Projectcard) error {
-	return o.AddProjectcards(ctx, boil.GetContextDB(), insert, related...)
 }
 
 // AddProjectcards adds the given related objects to the existing relationships
@@ -810,17 +773,6 @@ func (o *Pullrequest) AddProjectcards(ctx context.Context, exec boil.ContextExec
 	return nil
 }
 
-// SetProjectcardsG removes all previously related items of the
-// pullrequest replacing them completely with the passed
-// in related items, optionally inserting them as new records.
-// Sets o.R.ProjectcardPullrequest's Projectcards accordingly.
-// Replaces o.R.Projectcards with related.
-// Sets related.R.ProjectcardPullrequest's Projectcards accordingly.
-// Uses the global database handle.
-func (o *Pullrequest) SetProjectcardsG(ctx context.Context, insert bool, related ...*Projectcard) error {
-	return o.SetProjectcards(ctx, boil.GetContextDB(), insert, related...)
-}
-
 // SetProjectcards removes all previously related items of the
 // pullrequest replacing them completely with the passed
 // in related items, optionally inserting them as new records.
@@ -853,14 +805,6 @@ func (o *Pullrequest) SetProjectcards(ctx context.Context, exec boil.ContextExec
 	}
 
 	return o.AddProjectcards(ctx, exec, insert, related...)
-}
-
-// RemoveProjectcardsG relationships from objects passed in.
-// Removes related items from R.Projectcards (uses pointer comparison, removal does not keep order)
-// Sets related.R.ProjectcardPullrequest.
-// Uses the global database handle.
-func (o *Pullrequest) RemoveProjectcardsG(ctx context.Context, related ...*Projectcard) error {
-	return o.RemoveProjectcards(ctx, boil.GetContextDB(), related...)
 }
 
 // RemoveProjectcards relationships from objects passed in.
@@ -914,11 +858,6 @@ func Pullrequests(mods ...qm.QueryMod) pullrequestQuery {
 	return pullrequestQuery{q}
 }
 
-// FindPullrequestG retrieves a single record by ID.
-func FindPullrequestG(ctx context.Context, iD string, selectCols ...string) (*Pullrequest, error) {
-	return FindPullrequest(ctx, boil.GetContextDB(), iD, selectCols...)
-}
-
 // FindPullrequest retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
 func FindPullrequest(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Pullrequest, error) {
@@ -947,11 +886,6 @@ func FindPullrequest(ctx context.Context, exec boil.ContextExecutor, iD string, 
 	}
 
 	return pullrequestObj, nil
-}
-
-// InsertG a single record. See Insert for whitelist behavior description.
-func (o *Pullrequest) InsertG(ctx context.Context, columns boil.Columns) error {
-	return o.Insert(ctx, boil.GetContextDB(), columns)
 }
 
 // Insert a single record using an executor.
@@ -1033,12 +967,6 @@ func (o *Pullrequest) Insert(ctx context.Context, exec boil.ContextExecutor, col
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// UpdateG a single Pullrequest record using the global executor.
-// See Update for more documentation.
-func (o *Pullrequest) UpdateG(ctx context.Context, columns boil.Columns) (int64, error) {
-	return o.Update(ctx, boil.GetContextDB(), columns)
-}
-
 // Update uses an executor to update the Pullrequest.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
@@ -1102,11 +1030,6 @@ func (o *Pullrequest) Update(ctx context.Context, exec boil.ContextExecutor, col
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
-// UpdateAllG updates all rows with the specified column values.
-func (q pullrequestQuery) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return q.UpdateAll(ctx, boil.GetContextDB(), cols)
-}
-
 // UpdateAll updates all rows with the specified column values.
 func (q pullrequestQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
@@ -1122,11 +1045,6 @@ func (q pullrequestQuery) UpdateAll(ctx context.Context, exec boil.ContextExecut
 	}
 
 	return rowsAff, nil
-}
-
-// UpdateAllG updates all rows with the specified column values.
-func (o PullrequestSlice) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return o.UpdateAll(ctx, boil.GetContextDB(), cols)
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
@@ -1175,11 +1093,6 @@ func (o PullrequestSlice) UpdateAll(ctx context.Context, exec boil.ContextExecut
 		return 0, errors.Wrap(err, "db: unable to retrieve rows affected all in update all pullrequest")
 	}
 	return rowsAff, nil
-}
-
-// UpsertG attempts an insert, and does an update or ignore on conflict.
-func (o *Pullrequest) UpsertG(ctx context.Context, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
-	return o.Upsert(ctx, boil.GetContextDB(), updateOnConflict, conflictColumns, updateColumns, insertColumns)
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
@@ -1297,12 +1210,6 @@ func (o *Pullrequest) Upsert(ctx context.Context, exec boil.ContextExecutor, upd
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// DeleteG deletes a single Pullrequest record.
-// DeleteG will match against the primary key column to find the record to delete.
-func (o *Pullrequest) DeleteG(ctx context.Context) (int64, error) {
-	return o.Delete(ctx, boil.GetContextDB())
-}
-
 // Delete deletes a single Pullrequest record with an executor.
 // Delete will match against the primary key column to find the record to delete.
 func (o *Pullrequest) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
@@ -1339,10 +1246,6 @@ func (o *Pullrequest) Delete(ctx context.Context, exec boil.ContextExecutor) (in
 	return rowsAff, nil
 }
 
-func (q pullrequestQuery) DeleteAllG(ctx context.Context) (int64, error) {
-	return q.DeleteAll(ctx, boil.GetContextDB())
-}
-
 // DeleteAll deletes all matching rows.
 func (q pullrequestQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
@@ -1362,11 +1265,6 @@ func (q pullrequestQuery) DeleteAll(ctx context.Context, exec boil.ContextExecut
 	}
 
 	return rowsAff, nil
-}
-
-// DeleteAllG deletes all rows in the slice.
-func (o PullrequestSlice) DeleteAllG(ctx context.Context) (int64, error) {
-	return o.DeleteAll(ctx, boil.GetContextDB())
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
@@ -1418,15 +1316,6 @@ func (o PullrequestSlice) DeleteAll(ctx context.Context, exec boil.ContextExecut
 	return rowsAff, nil
 }
 
-// ReloadG refetches the object from the database using the primary keys.
-func (o *Pullrequest) ReloadG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: no Pullrequest provided for reload")
-	}
-
-	return o.Reload(ctx, boil.GetContextDB())
-}
-
 // Reload refetches the object from the database
 // using the primary keys with an executor.
 func (o *Pullrequest) Reload(ctx context.Context, exec boil.ContextExecutor) error {
@@ -1437,16 +1326,6 @@ func (o *Pullrequest) Reload(ctx context.Context, exec boil.ContextExecutor) err
 
 	*o = *ret
 	return nil
-}
-
-// ReloadAllG refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-func (o *PullrequestSlice) ReloadAllG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: empty PullrequestSlice provided for reload all")
-	}
-
-	return o.ReloadAll(ctx, boil.GetContextDB())
 }
 
 // ReloadAll refetches every row with matching primary key column values
@@ -1476,11 +1355,6 @@ func (o *PullrequestSlice) ReloadAll(ctx context.Context, exec boil.ContextExecu
 	*o = slice
 
 	return nil
-}
-
-// PullrequestExistsG checks if the Pullrequest row exists.
-func PullrequestExistsG(ctx context.Context, iD string) (bool, error) {
-	return PullrequestExists(ctx, boil.GetContextDB(), iD)
 }
 
 // PullrequestExists checks if the Pullrequest row exists.

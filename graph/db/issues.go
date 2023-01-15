@@ -398,11 +398,6 @@ func AddIssueHook(hookPoint boil.HookPoint, issueHook IssueHook) {
 	}
 }
 
-// OneG returns a single issue record from the query using the global executor.
-func (q issueQuery) OneG(ctx context.Context) (*Issue, error) {
-	return q.One(ctx, boil.GetContextDB())
-}
-
 // One returns a single issue record from the query.
 func (q issueQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Issue, error) {
 	o := &Issue{}
@@ -422,11 +417,6 @@ func (q issueQuery) One(ctx context.Context, exec boil.ContextExecutor) (*Issue,
 	}
 
 	return o, nil
-}
-
-// AllG returns all Issue records from the query using the global executor.
-func (q issueQuery) AllG(ctx context.Context) (IssueSlice, error) {
-	return q.All(ctx, boil.GetContextDB())
 }
 
 // All returns all Issue records from the query.
@@ -449,11 +439,6 @@ func (q issueQuery) All(ctx context.Context, exec boil.ContextExecutor) (IssueSl
 	return o, nil
 }
 
-// CountG returns the count of all Issue records in the query using the global executor
-func (q issueQuery) CountG(ctx context.Context) (int64, error) {
-	return q.Count(ctx, boil.GetContextDB())
-}
-
 // Count returns the count of all Issue records in the query.
 func (q issueQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	var count int64
@@ -467,11 +452,6 @@ func (q issueQuery) Count(ctx context.Context, exec boil.ContextExecutor) (int64
 	}
 
 	return count, nil
-}
-
-// ExistsG checks if the row exists in the table using the global executor.
-func (q issueQuery) ExistsG(ctx context.Context) (bool, error) {
-	return q.Exists(ctx, boil.GetContextDB())
 }
 
 // Exists checks if the row exists in the table.
@@ -880,14 +860,6 @@ func (issueL) LoadProjectcards(ctx context.Context, e boil.ContextExecutor, sing
 	return nil
 }
 
-// SetAuthorUserG of the issue to the related item.
-// Sets o.R.AuthorUser to related.
-// Adds o to related.R.AuthorIssues.
-// Uses the global database handle.
-func (o *Issue) SetAuthorUserG(ctx context.Context, insert bool, related *User) error {
-	return o.SetAuthorUser(ctx, boil.GetContextDB(), insert, related)
-}
-
 // SetAuthorUser of the issue to the related item.
 // Sets o.R.AuthorUser to related.
 // Adds o to related.R.AuthorIssues.
@@ -935,14 +907,6 @@ func (o *Issue) SetAuthorUser(ctx context.Context, exec boil.ContextExecutor, in
 	return nil
 }
 
-// SetIssueRepositoryG of the issue to the related item.
-// Sets o.R.IssueRepository to related.
-// Adds o to related.R.Issues.
-// Uses the global database handle.
-func (o *Issue) SetIssueRepositoryG(ctx context.Context, insert bool, related *Repository) error {
-	return o.SetIssueRepository(ctx, boil.GetContextDB(), insert, related)
-}
-
 // SetIssueRepository of the issue to the related item.
 // Sets o.R.IssueRepository to related.
 // Adds o to related.R.Issues.
@@ -988,15 +952,6 @@ func (o *Issue) SetIssueRepository(ctx context.Context, exec boil.ContextExecuto
 	}
 
 	return nil
-}
-
-// AddProjectcardsG adds the given related objects to the existing relationships
-// of the issue, optionally inserting them as new records.
-// Appends related to o.R.Projectcards.
-// Sets related.R.ProjectcardIssue appropriately.
-// Uses the global database handle.
-func (o *Issue) AddProjectcardsG(ctx context.Context, insert bool, related ...*Projectcard) error {
-	return o.AddProjectcards(ctx, boil.GetContextDB(), insert, related...)
 }
 
 // AddProjectcards adds the given related objects to the existing relationships
@@ -1052,17 +1007,6 @@ func (o *Issue) AddProjectcards(ctx context.Context, exec boil.ContextExecutor, 
 	return nil
 }
 
-// SetProjectcardsG removes all previously related items of the
-// issue replacing them completely with the passed
-// in related items, optionally inserting them as new records.
-// Sets o.R.ProjectcardIssue's Projectcards accordingly.
-// Replaces o.R.Projectcards with related.
-// Sets related.R.ProjectcardIssue's Projectcards accordingly.
-// Uses the global database handle.
-func (o *Issue) SetProjectcardsG(ctx context.Context, insert bool, related ...*Projectcard) error {
-	return o.SetProjectcards(ctx, boil.GetContextDB(), insert, related...)
-}
-
 // SetProjectcards removes all previously related items of the
 // issue replacing them completely with the passed
 // in related items, optionally inserting them as new records.
@@ -1095,14 +1039,6 @@ func (o *Issue) SetProjectcards(ctx context.Context, exec boil.ContextExecutor, 
 	}
 
 	return o.AddProjectcards(ctx, exec, insert, related...)
-}
-
-// RemoveProjectcardsG relationships from objects passed in.
-// Removes related items from R.Projectcards (uses pointer comparison, removal does not keep order)
-// Sets related.R.ProjectcardIssue.
-// Uses the global database handle.
-func (o *Issue) RemoveProjectcardsG(ctx context.Context, related ...*Projectcard) error {
-	return o.RemoveProjectcards(ctx, boil.GetContextDB(), related...)
 }
 
 // RemoveProjectcards relationships from objects passed in.
@@ -1156,11 +1092,6 @@ func Issues(mods ...qm.QueryMod) issueQuery {
 	return issueQuery{q}
 }
 
-// FindIssueG retrieves a single record by ID.
-func FindIssueG(ctx context.Context, iD string, selectCols ...string) (*Issue, error) {
-	return FindIssue(ctx, boil.GetContextDB(), iD, selectCols...)
-}
-
 // FindIssue retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
 func FindIssue(ctx context.Context, exec boil.ContextExecutor, iD string, selectCols ...string) (*Issue, error) {
@@ -1189,11 +1120,6 @@ func FindIssue(ctx context.Context, exec boil.ContextExecutor, iD string, select
 	}
 
 	return issueObj, nil
-}
-
-// InsertG a single record. See Insert for whitelist behavior description.
-func (o *Issue) InsertG(ctx context.Context, columns boil.Columns) error {
-	return o.Insert(ctx, boil.GetContextDB(), columns)
 }
 
 // Insert a single record using an executor.
@@ -1275,12 +1201,6 @@ func (o *Issue) Insert(ctx context.Context, exec boil.ContextExecutor, columns b
 	return o.doAfterInsertHooks(ctx, exec)
 }
 
-// UpdateG a single Issue record using the global executor.
-// See Update for more documentation.
-func (o *Issue) UpdateG(ctx context.Context, columns boil.Columns) (int64, error) {
-	return o.Update(ctx, boil.GetContextDB(), columns)
-}
-
 // Update uses an executor to update the Issue.
 // See boil.Columns.UpdateColumnSet documentation to understand column list inference for updates.
 // Update does not automatically update the record in case of default values. Use .Reload() to refresh the records.
@@ -1344,11 +1264,6 @@ func (o *Issue) Update(ctx context.Context, exec boil.ContextExecutor, columns b
 	return rowsAff, o.doAfterUpdateHooks(ctx, exec)
 }
 
-// UpdateAllG updates all rows with the specified column values.
-func (q issueQuery) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return q.UpdateAll(ctx, boil.GetContextDB(), cols)
-}
-
 // UpdateAll updates all rows with the specified column values.
 func (q issueQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, cols M) (int64, error) {
 	queries.SetUpdate(q.Query, cols)
@@ -1364,11 +1279,6 @@ func (q issueQuery) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 	}
 
 	return rowsAff, nil
-}
-
-// UpdateAllG updates all rows with the specified column values.
-func (o IssueSlice) UpdateAllG(ctx context.Context, cols M) (int64, error) {
-	return o.UpdateAll(ctx, boil.GetContextDB(), cols)
 }
 
 // UpdateAll updates all rows with the specified column values, using an executor.
@@ -1417,11 +1327,6 @@ func (o IssueSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 		return 0, errors.Wrap(err, "db: unable to retrieve rows affected all in update all issue")
 	}
 	return rowsAff, nil
-}
-
-// UpsertG attempts an insert, and does an update or ignore on conflict.
-func (o *Issue) UpsertG(ctx context.Context, updateOnConflict bool, conflictColumns []string, updateColumns, insertColumns boil.Columns) error {
-	return o.Upsert(ctx, boil.GetContextDB(), updateOnConflict, conflictColumns, updateColumns, insertColumns)
 }
 
 // Upsert attempts an insert using an executor, and does an update or ignore on conflict.
@@ -1539,12 +1444,6 @@ func (o *Issue) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnC
 	return o.doAfterUpsertHooks(ctx, exec)
 }
 
-// DeleteG deletes a single Issue record.
-// DeleteG will match against the primary key column to find the record to delete.
-func (o *Issue) DeleteG(ctx context.Context) (int64, error) {
-	return o.Delete(ctx, boil.GetContextDB())
-}
-
 // Delete deletes a single Issue record with an executor.
 // Delete will match against the primary key column to find the record to delete.
 func (o *Issue) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
@@ -1581,10 +1480,6 @@ func (o *Issue) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, e
 	return rowsAff, nil
 }
 
-func (q issueQuery) DeleteAllG(ctx context.Context) (int64, error) {
-	return q.DeleteAll(ctx, boil.GetContextDB())
-}
-
 // DeleteAll deletes all matching rows.
 func (q issueQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (int64, error) {
 	if q.Query == nil {
@@ -1604,11 +1499,6 @@ func (q issueQuery) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 	}
 
 	return rowsAff, nil
-}
-
-// DeleteAllG deletes all rows in the slice.
-func (o IssueSlice) DeleteAllG(ctx context.Context) (int64, error) {
-	return o.DeleteAll(ctx, boil.GetContextDB())
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.
@@ -1660,15 +1550,6 @@ func (o IssueSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 	return rowsAff, nil
 }
 
-// ReloadG refetches the object from the database using the primary keys.
-func (o *Issue) ReloadG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: no Issue provided for reload")
-	}
-
-	return o.Reload(ctx, boil.GetContextDB())
-}
-
 // Reload refetches the object from the database
 // using the primary keys with an executor.
 func (o *Issue) Reload(ctx context.Context, exec boil.ContextExecutor) error {
@@ -1679,16 +1560,6 @@ func (o *Issue) Reload(ctx context.Context, exec boil.ContextExecutor) error {
 
 	*o = *ret
 	return nil
-}
-
-// ReloadAllG refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-func (o *IssueSlice) ReloadAllG(ctx context.Context) error {
-	if o == nil {
-		return errors.New("db: empty IssueSlice provided for reload all")
-	}
-
-	return o.ReloadAll(ctx, boil.GetContextDB())
 }
 
 // ReloadAll refetches every row with matching primary key column values
@@ -1718,11 +1589,6 @@ func (o *IssueSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 	*o = slice
 
 	return nil
-}
-
-// IssueExistsG checks if the Issue row exists.
-func IssueExistsG(ctx context.Context, iD string) (bool, error) {
-	return IssueExists(ctx, boil.GetContextDB(), iD)
 }
 
 // IssueExists checks if the Issue row exists.
