@@ -10,6 +10,7 @@ import (
 	"github.com/saki-engineering/graphql-sample/graph"
 	"github.com/saki-engineering/graphql-sample/graph/services"
 	"github.com/saki-engineering/graphql-sample/internal"
+	"github.com/saki-engineering/graphql-sample/middlewares/auth"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
@@ -36,10 +37,13 @@ func main() {
 	defer db.Close()
 
 	service := services.New(db)
-	srv := handler.NewDefaultServer(internal.NewExecutableSchema(internal.Config{Resolvers: &graph.Resolver{
-		Srv:     service,
-		Loaders: graph.NewLoaders(service),
-	}}))
+	srv := handler.NewDefaultServer(internal.NewExecutableSchema(internal.Config{
+		Resolvers: &graph.Resolver{
+			Srv:     service,
+			Loaders: graph.NewLoaders(service),
+		},
+		Directives: graph.Directive,
+	}))
 	srv.Use(extension.FixedComplexityLimit(10))
 	// srv.AroundRootFields(func(ctx context.Context, next graphql.RootResolver) graphql.Marshaler {
 	// 	log.Println("before RootResolver")
@@ -73,7 +77,7 @@ func main() {
 	boil.DebugMode = true
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	http.Handle("/query", auth.AuthMiddleware(srv))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))

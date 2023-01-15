@@ -2,6 +2,8 @@
 #
 # https://gqlgen.com/getting-started/
 
+directive @isAuthenticated on FIELD_DEFINITION
+
 scalar DateTime
 
 scalar URI
@@ -168,7 +170,7 @@ type Query {
 
   user(
     name: String!
-  ): User
+  ): User @isAuthenticated
 
   node(
     id: ID!
