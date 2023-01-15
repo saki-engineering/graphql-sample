@@ -1,7 +1,3 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
 directive @isAuthenticated on FIELD_DEFINITION
 
 scalar DateTime
@@ -38,10 +34,8 @@ type Repository implements Node {
   ): PullRequest
   pullRequests(
     after: String
-    baseRefName: String
     before: String
     first: Int
-    headRefName: String
     last: Int
   ): PullRequestConnection!
 }

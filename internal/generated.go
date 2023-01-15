@@ -167,7 +167,7 @@ type ComplexityRoot struct {
 		Name         func(childComplexity int) int
 		Owner        func(childComplexity int) int
 		PullRequest  func(childComplexity int, number int) int
-		PullRequests func(childComplexity int, after *string, baseRefName *string, before *string, first *int, headRefName *string, last *int) int
+		PullRequests func(childComplexity int, after *string, before *string, first *int, last *int) int
 	}
 
 	User struct {
@@ -208,7 +208,7 @@ type RepositoryResolver interface {
 	Issue(ctx context.Context, obj *model.Repository, number int) (*model.Issue, error)
 	Issues(ctx context.Context, obj *model.Repository, after *string, before *string, first *int, last *int) (*model.IssueConnection, error)
 	PullRequest(ctx context.Context, obj *model.Repository, number int) (*model.PullRequest, error)
-	PullRequests(ctx context.Context, obj *model.Repository, after *string, baseRefName *string, before *string, first *int, headRefName *string, last *int) (*model.PullRequestConnection, error)
+	PullRequests(ctx context.Context, obj *model.Repository, after *string, before *string, first *int, last *int) (*model.PullRequestConnection, error)
 }
 type UserResolver interface {
 	ProjectV2(ctx context.Context, obj *model.User, number int) (*model.ProjectV2, error)
@@ -745,7 +745,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Repository.PullRequests(childComplexity, args["after"].(*string), args["baseRefName"].(*string), args["before"].(*string), args["first"].(*int), args["headRefName"].(*string), args["last"].(*int)), true
+		return e.complexity.Repository.PullRequests(childComplexity, args["after"].(*string), args["before"].(*string), args["first"].(*int), args["last"].(*int)), true
 
 	case "User.id":
 		if e.complexity.User.ID == nil {
@@ -854,11 +854,7 @@ func (ec *executionContext) introspectType(name string) (*introspection.Type, er
 }
 
 var sources = []*ast.Source{
-	{Name: "../schema.graphqls", Input: `# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-directive @isAuthenticated on FIELD_DEFINITION
+	{Name: "../schema.graphqls", Input: `directive @isAuthenticated on FIELD_DEFINITION
 
 scalar DateTime
 
@@ -894,10 +890,8 @@ type Repository implements Node {
   ): PullRequest
   pullRequests(
     after: String
-    baseRefName: String
     before: String
     first: Int
-    headRefName: String
     last: Int
   ): PullRequestConnection!
 }
@@ -1351,50 +1345,32 @@ func (ec *executionContext) field_Repository_pullRequests_args(ctx context.Conte
 	}
 	args["after"] = arg0
 	var arg1 *string
-	if tmp, ok := rawArgs["baseRefName"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("baseRefName"))
+	if tmp, ok := rawArgs["before"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
 		arg1, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["baseRefName"] = arg1
-	var arg2 *string
-	if tmp, ok := rawArgs["before"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("before"))
-		arg2, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
+	args["before"] = arg1
+	var arg2 *int
+	if tmp, ok := rawArgs["first"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+		arg2, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["before"] = arg2
+	args["first"] = arg2
 	var arg3 *int
-	if tmp, ok := rawArgs["first"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("first"))
+	if tmp, ok := rawArgs["last"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
 		arg3, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["first"] = arg3
-	var arg4 *string
-	if tmp, ok := rawArgs["headRefName"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("headRefName"))
-		arg4, err = ec.unmarshalOString2ᚖstring(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["headRefName"] = arg4
-	var arg5 *int
-	if tmp, ok := rawArgs["last"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("last"))
-		arg5, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["last"] = arg5
+	args["last"] = arg3
 	return args, nil
 }
 
@@ -4936,7 +4912,7 @@ func (ec *executionContext) _Repository_pullRequests(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Repository().PullRequests(rctx, obj, fc.Args["after"].(*string), fc.Args["baseRefName"].(*string), fc.Args["before"].(*string), fc.Args["first"].(*int), fc.Args["headRefName"].(*string), fc.Args["last"].(*int))
+		return ec.resolvers.Repository().PullRequests(rctx, obj, fc.Args["after"].(*string), fc.Args["before"].(*string), fc.Args["first"].(*int), fc.Args["last"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)

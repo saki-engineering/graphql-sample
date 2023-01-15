@@ -155,7 +155,7 @@ func (r *repositoryResolver) PullRequest(ctx context.Context, obj *model.Reposit
 }
 
 // PullRequests is the resolver for the pullRequests field.
-func (r *repositoryResolver) PullRequests(ctx context.Context, obj *model.Repository, after *string, baseRefName *string, before *string, first *int, headRefName *string, last *int) (*model.PullRequestConnection, error) {
+func (r *repositoryResolver) PullRequests(ctx context.Context, obj *model.Repository, after *string, before *string, first *int, last *int) (*model.PullRequestConnection, error) {
 	return r.Srv.ListPullRequestInRepository(ctx, obj.ID, after, before, first, last)
 }
 
