@@ -161,14 +161,14 @@ func (p *pullRequestService) ListPullRequestInRepository(ctx context.Context, re
 		startCursor, endCursor := pullRequests[0].ID, pullRequests[len(pullRequests)-1].ID
 
 		var err error
-		hasPrevPage, err = db.Issues(
+		hasPrevPage, err = db.Pullrequests(
 			db.PullrequestWhere.Repository.EQ(repoID),
 			db.PullrequestWhere.ID.LT(startCursor),
 		).Exists(ctx, p.exec)
 		if err != nil {
 			return nil, err
 		}
-		hasNextPage, err = db.Issues(
+		hasNextPage, err = db.Pullrequests(
 			db.PullrequestWhere.Repository.EQ(repoID),
 			db.PullrequestWhere.ID.GT(endCursor),
 		).Exists(ctx, p.exec)
