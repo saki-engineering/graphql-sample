@@ -23,6 +23,9 @@ func (r *issueResolver) Author(ctx context.Context, obj *model.Issue) (*model.Us
 		return nil, err
 	}
 	return user, nil
+
+	// N+1問題対処前
+	// return r.Srv.GetUserByID(ctx, obj.Author.ID)
 }
 
 // Repository is the resolver for the repository field.
