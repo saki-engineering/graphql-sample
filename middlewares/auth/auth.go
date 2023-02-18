@@ -25,7 +25,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		userName, err := validateToken(token)
 		if err != nil {
 			log.Println(err)
-			next.ServeHTTP(w, req)
+			http.Error(w, `{"reason": "invalid token"}`, http.StatusUnauthorized)
 			return
 		}
 
@@ -45,8 +45,11 @@ func GetUserName(ctx context.Context) (string, bool) {
 
 func validateToken(token string) (string, error) {
 	tElems := strings.SplitN(token, "_", 2)
-	tType, tUserName := tElems[0], tElems[1]
+	if len(tElems) < 2 {
+		return "", errors.New("invalid token")
+	}
 
+	tType, tUserName := tElems[0], tElems[1]
 	if tType != tokenPrefix {
 		return "", errors.New("invalid token")
 	}
